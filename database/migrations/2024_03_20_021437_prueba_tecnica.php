@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments("id");
             $table->string('nombre');
             $table->integer('id_ficha');
-            $table->timestamp('fecha');
+            $table->date('fecha')->default(date('Y-m-d'));
             $table->timestamps();
         });
 
@@ -34,7 +34,7 @@ return new class extends Migration
             $table->string('dv', 1);
             $table->integer('total');
             $table->string('estado');
-            $table->timestamp('fecha');
+            $table->date('fecha')->default(date('Y-m-d'));
             $table->timestamps();
         });
 
