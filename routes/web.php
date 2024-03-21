@@ -16,3 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::prefix("misbeneficios")->group(function () {
+    Route::get("/", [\App\Http\Controllers\BeneficiosController::class, 'getBeneficiosAnhos']);
+});
