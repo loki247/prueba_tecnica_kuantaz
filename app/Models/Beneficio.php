@@ -15,7 +15,7 @@ class Beneficio extends Model
     protected $primaryKey = "id";
 
     public static function getBeneficiosAnhos(){
-        $b = Beneficio::select(
+        $beneficios = Beneficio::select(
             DB::raw("EXTRACT('Year' FROM beneficios.fecha) AS year"),
             DB::raw("COUNT (beneficios.id) AS num"),
             DB::raw("SUM(beneficios_entregados.total) as monto_total"))
@@ -23,20 +23,10 @@ class Beneficio extends Model
             ->groupBy(DB::raw("year"))
             ->orderBy("year", "ASC")->get();
 
-        $beneficios = $b->map(function ($value){
+        $beneficios = $beneficios->map(function ($value){
             $r = $value->toArray();
 
-            /*
-             SELECT
-                beneficios.id,
-                beneficios.nombre,
-                beneficios.fecha,
-                SUM(beneficios_entregados.total) as total
-                FROM prueba.beneficios
-                LEFT JOIN prueba.beneficios_entregados ON beneficios.id = beneficios_entregados.id_beneficio
-                WHERE EXTRACT('year' FROM beneficios.fecha) = 2024
-                GROUP BY beneficios.id
-             */
+            $r['monto_total'] = "$" . number_format($r['monto_total'], 0, ",", ".");
 
             $r['beneficios'] = Beneficio::select(
                 "beneficios.id",
@@ -47,18 +37,20 @@ class Beneficio extends Model
                 ->where(DB::raw("EXTRACT('year' FROM beneficios.fecha)"), "=", $r['year'])
                 ->groupBy("beneficios.id")->get();
 
-                $r2 = $r['beneficios']->map(function ($value2){
-                    $r3 = $value2->toArray();
+                $r['beneficios'] = $r['beneficios']->map(function ($value2){
+                    $r2 = $value2->toArray();
 
-                    $fecha = $r3['fecha'];
+                    $r2['total'] = "$" . number_format($r2['total'], 0, ",", ".");
 
-                    $r3['fecha'] = Carbon::parse($fecha)->format("d/m/Y");
-                    $r3['mes'] = Carbon::parse($fecha)->format("M");
+                    $fecha = Carbon::parse($r2['fecha']);
 
-                    return $r3;
+                    $r2['fecha'] = $fecha->format("d/m/Y");
+                    $r2['mes'] = $fecha->locale("es")->isoFormat("MMMM");
+
+                    return $r2;
                 });
 
-            return $r2;
+            return $r;
         });
 
         return $beneficios;
