@@ -17,9 +17,10 @@ class Beneficio extends Model
         $beneficios = Beneficio::select(
             DB::raw("EXTRACT('Year' FROM beneficios.fecha) AS year"),
             DB::raw("COUNT (beneficios.id) AS num"),
-            DB::raw("SUM(montos_maximos.monto_maximo) as monto_total"))
-            ->leftJoin("prueba.montos_maximos", "beneficios.id", "=", "montos_maximos.id_beneficio")
-            ->groupBy(DB::raw("EXTRACT('Year' FROM beneficios.fecha)"))->get();
+            DB::raw("SUM(beneficios_entregados.total) as monto_total"))
+            ->leftJoin("prueba.beneficios_entregados", "beneficios.id", "=", "beneficios_entregados.id_beneficio")
+            ->groupBy(DB::raw("year"))
+            ->orderBy("year", "ASC")->get();
 
         return collect($beneficios);
     }
