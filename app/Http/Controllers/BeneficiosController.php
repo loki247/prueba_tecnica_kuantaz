@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class BeneficiosController extends Controller
 {
-    public function getBeneficiosAnhos(){
-        return response()->json(Beneficio::getBeneficiosAnhos());
+    public function getBeneficiosRun($run){
+        return response()->json(Beneficio::getBeneficiosRun($run));
     }
 }

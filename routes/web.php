@@ -17,6 +17,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix("misbeneficios")->group(function () {
-    Route::get("/", [\App\Http\Controllers\BeneficiosController::class, 'getBeneficiosAnhos']);
+Route::get("misbeneficios/{run}", [\App\Http\Controllers\BeneficiosController::class, 'getBeneficiosRun']);
+
+Route::prefix("fichas")->group(function () {
+    Route::post("save", [\App\Http\Controllers\FichaController::class, 'saveFicha']);
 });
