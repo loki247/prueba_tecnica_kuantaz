@@ -18,6 +18,16 @@ class Ficha extends Model
 
         $ficha->save();
     }
+
+    public static function updateFicha($data){
+        $ficha = Ficha::find($data->id);
+        $ficha->nombre = $data->nombre;
+        $ficha->url = $data->url;
+        $ficha->publicada = $data->publicada;
+
+        $ficha->save();
+    }
+
     public static function getFicha($idBeneficio){
         $ficha = Ficha::select(
             "ficha.id",

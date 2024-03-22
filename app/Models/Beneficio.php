@@ -14,6 +14,24 @@ class Beneficio extends Model
     protected $table = "prueba.beneficios";
     protected $primaryKey = "id";
 
+    public static function saveBeneficio($data){
+        $beneficio = new Beneficio();
+        $beneficio->nombre = $data->nombre;
+        $beneficio->id_ficha = $data->id_ficha;
+        $beneficio->fecha = $data->fecha;
+
+        $beneficio->save();
+    }
+
+    public static function updateBeneficio($data){
+        $beneficio = Beneficio::find($data->id);
+        $beneficio->nombre = $data->nombre;
+        $beneficio->id_ficha = $data->id_ficha;
+        $beneficio->fecha = $data->fecha;
+
+        $beneficio->save();
+    }
+
     public static function getBeneficiosRun($run){
         $beneficios = Beneficio::select(
             DB::raw("EXTRACT('Year' FROM beneficios.fecha) AS year"),
