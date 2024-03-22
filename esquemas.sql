@@ -1,5 +1,7 @@
-drop schema if exists usuarios cascade;
-drop schema if exists prueba cascade;
+CREATE DATABASE IF NOT EXISTS prueba_tecnica;
 
-create schema if not exists usuarios;
-create schema if not exists prueba;
+DROP SCHEMA IF EXISTS usuarios cascade;
+DROP SCHEMA IF EXISTS prueba cascade;
+
+CREATE SCHEMA IF NOT EXISTS usuarios;
+CREATE SCHEMA IF NOT EXISTS prueba;
